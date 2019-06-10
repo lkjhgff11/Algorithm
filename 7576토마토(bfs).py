@@ -47,7 +47,7 @@ for y in range(n):
         if box[y][x]==0:
             day=0
             print(-1)
-            exit()
+            break #exit()  # break
             
 if day!=0:
     print(day-1)
