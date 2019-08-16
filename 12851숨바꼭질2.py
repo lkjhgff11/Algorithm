@@ -2,25 +2,32 @@ from collections import deque
 n,k = map(int,input().split())
 q = deque()
 cnt = 0
-q.append((n,k,0))
+q.append((0,n))
+MAX = 500005
 minn = 10**10
+visited = [0]*MAX
 
 while q:
-    x,k,time = q.popleft()
-   
+  
+    time,x = q.popleft()
+
     if x == k and cnt == 0:
         minn = time
-        cnt += 1 
-
+  
     if x == k and time == minn :
         cnt +=1
-      
+
     if time > minn:
         print(minn)
-        print(cnt-1)
+        print(cnt)
         break
 
-    q.append((x-1,k,time+1))
-    q.append((x+1,k,time+1))
-    q.append((2*x,k,time+1)) 
-         
+
+    for nx in (x-1,x+1,2*x):
+        if nx < -1 or nx > 200000:
+            continue
+
+        if not visited[nx] or visited[nx] == visited[x]+1:
+            q.append((time+1,nx))
+            visited[nx] = visited[x]+1
+    
