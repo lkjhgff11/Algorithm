@@ -117,9 +117,43 @@ print(li)
 dic = list(input().split(','))
 print(', '.join(sorted(dic)))
 
-'''
+
 
 nums = list(map(int,input().split(',')))
 ans = [i for i in nums if i%2 != 0]
 print(*ans,sep=', ')
             
+
+
+t = (1,2,3,4,5,6,7,8,9,10)
+print(t[:5])
+print(t[6:])
+
+#print([i for i in (5, 6, 77, 45, 22, 12, 24) if i % 2 != 0])
+
+
+li = [12, 24, 35, 70, 88, 120, 155]
+print([li[i] for i in range(len(li)) if i%2 !=0 ])
+
+
+print([[[0 for x in range(4)] for y in range(3)] for z in range(2)])
+
+nums = [12, 24, 35, 70, 88, 120, 155]
+print([nums[n]for n in range(len(nums)) if n not in (0,4,5)])
+
+
+li1 =  [1,3,6,78,35,55]
+li2 =  [12,24,35,24,88,120,155]
+
+ans = []
+for l1 in li1:
+    for l2 in li2:
+        if l1 == l2:
+            ans.append(l1)
+print(ans)            
+
+'''
+a = [12,24,35,24,88,120,155,88,120,155]
+a = set(a)
+print(list(sorted(a)))
+
