@@ -1,80 +1,54 @@
-# 0: 빈칸, 1: 벽, 2: 바이러스 위치
-# 벽:-, 비활성바이러스: * , 활성바이러스: # (0 대신에 #을 활성바이러스로..)
+from itertools import combinations
+from collections import deque
+from pprint import pprint
+# 0:'O'빈칸, 1: '-'벽, 2: '#' 방문안한 비활성 바이러스(방문하면 *로 바뀐다.)
 
-def spread(virus,grid2,t):
+def get_time(virus):
+    area = [g[:] for g in grid]
+    dic = 'O-#'
+    for y in range(n):
+        for x in range(n):
+            area[y][x] = dic[area[y][x]]
+                           
     q = deque()
-    for y,x in virus:
-        grid2[y][x] = '#'
+    for (y,x) in virus:
         q.append((y,x,0))
-      
-        
-    for iy,ix in iv:
-        if (iy,ix) in virus:
-            continue
-        grid2[iy][ix] = '*'
 
-  
+    time = MAX
     while q:
         y,x,cnt = q.popleft()
+       
+        if area[y][x] != '*':
+            time = cnt
+            
         for i in range(4):
             ny = y + dy[i]
             nx = x + dx[i]
 
-            if ny in (-1,n) or nx in (-1,n):
-                continue 
-            
-            if grid2[ny][nx] == '*' :
-                q.append((ny,nx,cnt+1))
-                
-                
-            if grid2[ny][nx] == 0:
-                grid2[ny][nx] = cnt+1
-                q.append((ny,nx,cnt+1))    
-               
+            if ny in (-1,n) or nx in (-1,n) or area[ny][nx] not in ('O','#'):
+                continue
+
+            if area[ny][nx] == '#':
+                area[ny][nx] = '*'
+
+            else:
+                area[ny][nx] = cnt+1
+            q.append((ny,nx,cnt+1))
+
     for y in range(n):
         for x in range(n):
-            if grid2[y][x] == 0 :
-                return
-            if type(grid2[y][x]) == int:
-                t = max(grid2[y][x],t)
+            if area[y][x] == 'O':
+                time = MAX
 
-                
-    ans.append(t)           
+    return time
 
-        
 
-from itertools import combinations
-from collections import deque
-from pprint import pprint
-import sys
-input = sys.stdin.readline
 dy = [1,0,0,-1]
 dx = [0,1,-1,0]
 n,m = map(int,input().split())
-grid = [list(map(int,input().split()))for _ in range(n)]
-iv = [(y,x)for y in range(n) for x in range(n) if grid[y][x] == 2]
-minn = sys.maxsize
-  
-# 1이던 벽을 - 로 고정
-for y in range(n):
-    for x in range(n):
-        if grid[y][x] == 1:
-            grid[y][x] = '-'
+grid = [list(map(int,input().split())) for _ in range(n)]
+viruses = [(y,x)for y in range(n) for x in range(n) if grid[y][x] == 2]
 
-# 비활성 바이러스(iv)들 중에 활성 바이러스 m개 선택
-av = list(combinations(iv,m))
-ans = []
-
-if all(grid[y][x] for y in range(n) for x in range(n)) in (1,2):
-    print(0)
-    
-else:
-    for a in av:
-        g = [g[:] for g in grid]
-        spread(a,g,-1)
-
-    if ans == []:
-        print(-1)
-    
-    else:
-        print(min(ans))
+MAX = 10 ** 10
+ans = min(map(get_time,combinations(viruses,m)))
+print(ans if ans != MAX else -1) 
