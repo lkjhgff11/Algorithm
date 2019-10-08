@@ -12,7 +12,7 @@ a= [[] for _ in range(n)]  # a는 도착하는 정점, 가중치 담는다
 
 for _ in range(e):
     u,v,w=map(int,input().split()) # u에서 v로가는 가중치w를 각각 입력받음
-    a[u-1].append([v-1,w])  # 인덱스 u-1에서 v-1로가는 가중치
+    a[u-1].append([w,v-1])  # 인덱스 u-1에서 v-1로가는 가중치
 
 # 다익스트라 알고리즘
 # 우선순위큐는 정점번호, 해당정점까지의 거리를 쌍으로 넣는다.
@@ -27,7 +27,7 @@ def dijkstra():
             continue
 
         # 더 짧은 경로 발견하면, dist[]갱신하고 우선순위 큐에다 넣는다.
-        for nxt,nxt_weight in a[cur]:   
+        for nxt_weight,nxt in a[cur]:   
             nxt_weight += weight   
 
             if dist[nxt] > nxt_weight:
